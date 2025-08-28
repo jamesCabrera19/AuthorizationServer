@@ -32,7 +32,11 @@ Features
 
     CORS
 
-    JWT
+   JWT
+
+   
+# To use simply install all dependencies command: npm install,  and replace the mongodb credentials with your own.
+
 
 
 
