@@ -7,6 +7,7 @@ const { encryptionKey } = require('../keys');
 
 // routes
 const SIGNUP = '/signup';
+// sign in route
 const SIGNIN = '/signin';
 
 router.post(SIGNUP, async (req, res) => {
