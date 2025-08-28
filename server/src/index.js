@@ -1,14 +1,16 @@
 // Import the User model
-require("./models/User");
+require('./models/User');
 //
-const express = require("express");
-const mongoose = require("mongoose");
-const authRoutes = require("./routes/authRoutes");
-const requireAuth = require("./middlewares/requireAuth");
-const { mongoUri } = require("./keys");
+const express = require('express');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
+const requireAuth = require('./middlewares/requireAuth');
+const { mongoUri } = require('./keys');
 
 // instance of the express app
 const app = express();
+
+// server port
 const PORT = 3005;
 
 // Middleware for parsing application/json
@@ -19,20 +21,20 @@ app.use(authRoutes);
 
 // Connect to MongoDB database
 mongoose.connect(mongoUri);
-mongoose.connection.on("connected", () => {
-    console.log("Connected to MongoDB Database");
+mongoose.connection.on('connected', () => {
+    console.log('Connected to MongoDB Database');
 });
-mongoose.connection.on("error", (error) => {
-    console.log("Error connecting to MongoDB Database", error);
+mongoose.connection.on('error', (error) => {
+    console.log('Error connecting to MongoDB Database', error);
 });
 
 // Home route
-app.get("/", (req, res) => {
-    res.send("Hi there");
+app.get('/', (req, res) => {
+    res.send('Hi there');
 });
 
 // Protected route that requires authentication
-app.get("/protected", requireAuth, (req, res) => {
+app.get('/protected', requireAuth, (req, res) => {
     res.send(`Hi User: ${req.user}`);
 });
 

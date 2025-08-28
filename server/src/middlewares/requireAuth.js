@@ -1,21 +1,23 @@
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const User = mongoose.model("User"); // user schema
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const User = mongoose.model('User'); // user schema
 //
-const { encryptionKey } = require("../keys");
+const { encryptionKey } = require('../keys');
 
 module.exports = (req, res, next) => {
     const { authorization } = req.headers;
-    //
+    // check to ensure users dont bypass the auth
     if (!authorization) {
-        return res.status(401).send({ error: "You must be logged in" });
+        return res.status(401).send({ error: 'You must be logged in' });
     }
     // extracting the token
-    const token = authorization.replace("Bearer ", "");
+    const token = authorization.replace('Bearer ', '');
+
+    // verifying the token
     jwt.verify(token, encryptionKey, async (error, payload) => {
         // if there is an error we return early
         if (error) {
-            return res.status(401).send({ error: "You must be logged in" });
+            return res.status(401).send({ error: 'You must be logged in' });
         }
         // extracting user from params
         const { userId } = payload;

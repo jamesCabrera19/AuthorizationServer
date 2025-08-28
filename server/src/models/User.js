@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
+// mongoose schema
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -14,21 +15,23 @@ const userSchema = new mongoose.Schema({
 });
 
 // pre-save middleware
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
     try {
+        // accessing the user
         const user = this;
 
-        if (!user.isModified("password")) {
+        // if no work is needed proceed to next middleware
+        if (!user.isModified('password')) {
             return next();
         }
-        console.log("user.password before hashing: ", user.password);
+        // console.log('user.password before hashing: ', user.password);
         // generating salt
         const salt = await bcrypt.genSalt(10);
         // hashing the password
         const hash = await bcrypt.hash(user.password, salt);
         // updating the user password with the hashed version
         user.password = hash;
-        console.log("user.password After hashing: ", user.password);
+        // console.log('user.password After hashing: ', user.password);
 
         // calling next middleware
         next();
@@ -51,4 +54,4 @@ userSchema.methods.comparePassword = function (candidatePassword) {
     });
 };
 
-mongoose.model("User", userSchema);
+mongoose.model('User', userSchema);

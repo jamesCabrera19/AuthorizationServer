@@ -1,23 +1,25 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
-const User = mongoose.model("User"); // user schema
+const express = require('express');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const User = mongoose.model('User'); // user schema
 const router = express.Router();
-const { encryptionKey } = require("../keys");
+const { encryptionKey } = require('../keys');
 
 // routes
-const SIGNUP = "/signup";
-const SIGNIN = "/signin";
+const SIGNUP = '/signup';
+const SIGNIN = '/signin';
 
 router.post(SIGNUP, async (req, res) => {
+    // extracting the email and password from the body
     const { email, password } = req.body;
 
     try {
         // Check if email is already in the database
         const existingUser = await User.findOne({ email });
 
+        // check if user already exist
         if (existingUser) {
-            return res.status(422).send({ error: "Email already exists" });
+            return res.status(422).send({ error: 'Email already exists' });
         }
 
         // Create a new user in the database
@@ -41,7 +43,7 @@ router.post(SIGNIN, async (req, res) => {
     if (!email || !password) {
         return res
             .status(422)
-            .send({ error: "Must provide email and password" });
+            .send({ error: 'Must provide email and password' });
     }
 
     // Find user by email
@@ -49,7 +51,7 @@ router.post(SIGNIN, async (req, res) => {
 
     // If user not found, return error
     if (!user) {
-        return res.status(404).send({ error: "Email not found" });
+        return res.status(404).send({ error: 'Email not found' });
     }
 
     try {
@@ -65,7 +67,7 @@ router.post(SIGNIN, async (req, res) => {
         });
     } catch (error) {
         // If password comparison fails, return error
-        return res.status(422).send({ error: "Invalid Password or Email" });
+        return res.status(422).send({ error: 'Invalid Password or Email' });
     }
 });
 
